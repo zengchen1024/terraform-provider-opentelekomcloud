@@ -21,7 +21,6 @@ var (
 	OS_IMAGE_NAME             = os.Getenv("OS_IMAGE_NAME")
 	OS_NETWORK_ID             = os.Getenv("OS_NETWORK_ID")
 	OS_POOL_NAME              = os.Getenv("OS_POOL_NAME")
-	OS_REGION_NAME            string
 	OS_ACCESS_KEY             = os.Getenv("OS_ACCESS_KEY")
 	OS_SECRET_KEY             = os.Getenv("OS_SECRET_KEY")
 	OS_SRC_ACCESS_KEY         = os.Getenv("OS_SRC_ACCESS_KEY")
@@ -36,6 +35,7 @@ var (
 	OS_NIC_ID                 = os.Getenv("OS_NIC_ID")
 	OS_TO_TENANT_ID           = os.Getenv("OS_TO_TENANT_ID")
 	OS_TENANT_NAME            = getTenantName()
+	OS_REGION_NAME            = GetRegion(nil, &Config{TenantName: OS_TENANT_NAME})
 )
 
 var testAccProviders map[string]terraform.ResourceProvider
@@ -46,12 +46,6 @@ func init() {
 	testAccProviders = map[string]terraform.ResourceProvider{
 		"opentelekomcloud": testAccProvider,
 	}
-	tn := os.Getenv("OS_TENANT_NAME")
-	if tn == "" {
-		tn = os.Getenv("OS_PROJECT_NAME")
-	}
-	OS_REGION_NAME = GetRegion(nil, &Config{TenantName: tn})
-
 }
 
 func getTenantName() string {
